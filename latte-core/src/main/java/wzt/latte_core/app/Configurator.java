@@ -1,24 +1,34 @@
 package wzt.latte_core.app;
 
-import java.util.WeakHashMap;
+import com.joanzapata.iconify.Icon;
+import com.joanzapata.iconify.IconFontDescriptor;
+import com.joanzapata.iconify.Iconify;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * Created by Tao on 2018/2/24.
+ *
+ * @author Tao
+ * @date 2018/2/24
  * desc:
  */
 
 public class Configurator {
-    private static final WeakHashMap<String, Object> LATTE_CONFIGS = new WeakHashMap<>();
+    private static final HashMap<String, Object> LATTE_CONFIGS = new HashMap<>();
+    private static final ArrayList<IconFontDescriptor> ICONS = new ArrayList<>();
 
     private Configurator() {
         LATTE_CONFIGS.put(ConfigType.CONFIG_READY.name(), false);
     }
 
-    public static WeakHashMap<String, Object> getLatteConfigs() {
+    public static HashMap<String, Object> getLatteConfigs() {
         return LATTE_CONFIGS;
     }
 
     public final void configure() {
+        initIcon();
         LATTE_CONFIGS.put(ConfigType.CONFIG_READY.name(), true);
     }
 
@@ -33,6 +43,20 @@ public class Configurator {
     public final Configurator withApiHost(String host) {
         LATTE_CONFIGS.put(ConfigType.API_HOST.name(), host);
         return this;
+    }
+
+    public final Configurator withIcon(IconFontDescriptor descriptor) {
+        ICONS.add(descriptor);
+        return this;
+    }
+
+    private void initIcon() {
+        if (ICONS.size() > 0) {
+            final Iconify.IconifyInitializer initializer = Iconify.with(ICONS.get(0));
+            for (int i = 1, size = ICONS.size(); i < size; i++) {
+                initializer.with(ICONS.get(i));
+            }
+        }
     }
 
     private void checkConfiguration() {
