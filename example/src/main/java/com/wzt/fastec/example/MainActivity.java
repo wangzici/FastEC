@@ -1,23 +1,27 @@
 package com.wzt.fastec.example;
 
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.Toast;
 
-import wzt.latte_core.app.ConfigType;
-import wzt.latte_core.app.Latte;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
+
+import me.yokeyword.fragmentation.ISupportFragment;
+import wzt.latte_core.activities.ProxyActivity;
+import wzt.latte_core.delegates.LatteDelegate;
 
 /**
  * @author Tao
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ProxyActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        Log.i("wzt", "MainActivity onCreate");
+    }
 
-        Toast.makeText((Context) Latte.getConfigurations().get(ConfigType.APPLICATION_CONTEXT.name()), "传入了Context啦", Toast.LENGTH_SHORT).show();
+    @Override
+    public LatteDelegate setRootDelegate() {
+        return new ExampleDelegate();
     }
 }
