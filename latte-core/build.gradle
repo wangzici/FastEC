@@ -25,6 +25,7 @@ android {
 
 }
 
+//noinspection SpellCheckingInspection
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -32,8 +33,21 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation project(':latte-annotations')
+
+    //字体库fontawesome
     api 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
+
+    //fragmention
     compile 'me.yokeyword:fragmentation:1.2.7'
+
+    //butterknife
     api 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //网络请求依赖
+    implementation 'com.squareup.okio:okio:1.13.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
+
 }
