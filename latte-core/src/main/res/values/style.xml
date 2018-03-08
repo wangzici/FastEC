@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyAppCompactDialogStyle" parent="Theme.AppCompat.Dialog" >
+        <!--无标题栏-->
+        <item name="android:windowNoTitle">true</item>
+        <!--背景透明-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--半透明-->
+        <item name="android:windowIsTranslucent">false</item>
+        <!--全屏幕-->
+        <item name="android:windowFullscreen">true</item>
+        <!--允许模糊-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!--是否浮现在Activity之上-->
+        <item name="android:windowIsFloating">true</item>
+    </style>
+</resources>

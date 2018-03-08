@@ -1,5 +1,8 @@
 package wzt.latte_core.net;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.util.WeakHashMap;
 
 import okhttp3.RequestBody;
@@ -9,6 +12,8 @@ import wzt.latte_core.net.callback.IFailure;
 import wzt.latte_core.net.callback.IRequest;
 import wzt.latte_core.net.callback.ISuccess;
 import wzt.latte_core.net.callback.RequestCallBacks;
+import wzt.latte_core.ui.LatteLoader;
+import wzt.latte_core.ui.LoaderStyle;
 
 /**
  * @author Tao
@@ -23,8 +28,11 @@ public class RestClient {
     private final IError ERROR;
     private final IRequest REQUEST;
     private final RequestBody REQUESTBODY;
+    private final Context CONTEXT;
+    private final LoaderStyle LOADER_STYLE;
 
-    RestClient(String url, WeakHashMap<String, Object> params, ISuccess success, IFailure failure, IError error, IRequest request, RequestBody requestBody) {
+
+    RestClient(String url, WeakHashMap<String, Object> params, ISuccess success, IFailure failure, IError error, IRequest request, RequestBody requestBody,Context context,LoaderStyle loadingType) {
         this.URL = url;
         PARAMS.putAll(params);
         this.SUCCESS = success;
@@ -32,6 +40,8 @@ public class RestClient {
         this.ERROR = error;
         this.REQUEST = request;
         this.REQUESTBODY = requestBody;
+        this.CONTEXT = context;
+        this.LOADER_STYLE = loadingType;
     }
 
     public static RestClientBuilder builder() {
@@ -41,6 +51,10 @@ public class RestClient {
     private void request(HttpMethod httpMethod) {
         final RestService service = RestCreator.getRestService();
         Call<String> call = null;
+
+        if (LOADER_STYLE != null) {
+            LatteLoader.showLoading(CONTEXT);
+        }
 
         if (REQUEST != null) {
             REQUEST.onRequestStart();
@@ -68,7 +82,7 @@ public class RestClient {
     }
 
     private RequestCallBacks getRequestCallBacks() {
-        return new RequestCallBacks(REQUEST, SUCCESS, ERROR, FAILURE);
+        return new RequestCallBacks(REQUEST, SUCCESS, ERROR, FAILURE, LOADER_STYLE);
     }
 
 

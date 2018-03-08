@@ -1,5 +1,7 @@
 package wzt.latte_core.net;
 
+import android.content.Context;
+
 import java.util.WeakHashMap;
 
 import okhttp3.RequestBody;
@@ -7,6 +9,7 @@ import wzt.latte_core.net.callback.IError;
 import wzt.latte_core.net.callback.IFailure;
 import wzt.latte_core.net.callback.IRequest;
 import wzt.latte_core.net.callback.ISuccess;
+import wzt.latte_core.ui.LoaderStyle;
 
 /**
  * @author Tao
@@ -21,6 +24,8 @@ public class RestClientBuilder {
     private IError mError;
     private IRequest mRequest;
     private RequestBody mRequestBody;
+    private Context mContext;
+    private LoaderStyle mLoadingType;
 
     public RestClientBuilder url(String url) {
         this.mUrl = url;
@@ -62,7 +67,19 @@ public class RestClientBuilder {
         return this;
     }
 
+    public RestClientBuilder loader(Context context) {
+        this.mContext = context;
+        this.mLoadingType = LoaderStyle.BallClipRotatePulseIndicator;
+        return this;
+    }
+
+    public RestClientBuilder loader(Context context,LoaderStyle loadingType) {
+        this.mContext = context;
+        this.mLoadingType = loadingType;
+        return this;
+    }
+
     public RestClient build() {
-        return new RestClient(mUrl, mParams, mSuccess, mFailure, mError, mRequest, mRequestBody);
+        return new RestClient(mUrl, mParams, mSuccess, mFailure, mError, mRequest, mRequestBody, mContext, mLoadingType);
     }
 }

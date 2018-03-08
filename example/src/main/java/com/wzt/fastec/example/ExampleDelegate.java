@@ -32,6 +32,7 @@ public class ExampleDelegate extends LatteDelegate {
 
     private void testRestClient() {
         RestClient.builder()
+                .loader(getContext())
                 .url("http://www.baidu.com")
                 .request(new IRequest() {
                     @Override
@@ -45,19 +46,19 @@ public class ExampleDelegate extends LatteDelegate {
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
-                        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
                     }
                 })
                 .error(new IError() {
                     @Override
                     public void onError(int code, String msg) {
-                        Toast.makeText(getContext(), "[onError] code = " + code, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getContext(), "[onError] code = " + code, Toast.LENGTH_LONG).show();
                     }
                 })
                 .failure(new IFailure() {
                     @Override
                     public void onFailure() {
-                        Toast.makeText(getContext(), "[onFailure]", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getContext(), "[onFailure]", Toast.LENGTH_LONG).show();
                     }
                 })
                 .build()
