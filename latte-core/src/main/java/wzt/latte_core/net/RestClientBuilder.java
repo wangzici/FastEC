@@ -2,6 +2,7 @@ package wzt.latte_core.net;
 
 import android.content.Context;
 
+import java.io.File;
 import java.util.WeakHashMap;
 
 import okhttp3.RequestBody;
@@ -26,6 +27,10 @@ public class RestClientBuilder {
     private RequestBody mRequestBody;
     private Context mContext;
     private LoaderStyle mLoadingType;
+    private File mFile;
+    private String mDownloadDir;
+    private String mExtension;
+    private String mName;
 
     public RestClientBuilder url(String url) {
         this.mUrl = url;
@@ -79,7 +84,33 @@ public class RestClientBuilder {
         return this;
     }
 
+    public RestClientBuilder file(File file) {
+        this.mFile = file;
+        return this;
+    }
+
+    public RestClientBuilder file(String filename) {
+        this.mFile = new File(filename);
+        return this;
+    }
+
+    public final RestClientBuilder name(String name) {
+        this.mName = name;
+        return this;
+    }
+
+    public final RestClientBuilder dir(String dir) {
+        this.mDownloadDir = dir;
+        return this;
+    }
+
+    public final RestClientBuilder extension(String extension) {
+        this.mExtension = extension;
+        return this;
+    }
+
+
     public RestClient build() {
-        return new RestClient(mUrl, mParams, mSuccess, mFailure, mError, mRequest, mRequestBody, mContext, mLoadingType);
+        return new RestClient(mUrl, mParams, mSuccess, mFailure, mError, mRequest, mRequestBody, mContext, mLoadingType, mFile, mDownloadDir, mExtension, mName);
     }
 }
