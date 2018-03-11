@@ -8,6 +8,7 @@ import android.util.Log;
 import me.yokeyword.fragmentation.ISupportFragment;
 import wzt.latte_core.activities.ProxyActivity;
 import wzt.latte_core.delegates.LatteDelegate;
+import wzt.latte_ec.launcher.LauncherDeegate;
 
 /**
  * @author Tao
@@ -22,6 +23,6 @@ public class MainActivity extends ProxyActivity {
 
     @Override
     public LatteDelegate setRootDelegate() {
-        return new ExampleDelegate();
+        return new LauncherDeegate();
     }
 }

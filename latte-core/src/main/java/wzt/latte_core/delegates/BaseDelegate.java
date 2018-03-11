@@ -14,6 +14,7 @@ import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportFragmentDelegate;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
+import wzt.latte_core.activities.ProxyActivity;
 
 /**
  * @author Tao
@@ -151,5 +152,9 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     @Override
     public boolean onBackPressedSupport() {
         return false;
+    }
+
+    public ProxyActivity getProxyActivity() {
+        return (ProxyActivity) getActivity();
     }
 }
