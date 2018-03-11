@@ -13,5 +13,7 @@ public enum ConfigType {
     APPLICATION_CONTEXT,
     CONFIG_READY,
     //存储自己的初始化项目
-    ICON
+    ICON,
+    //OkHttp的Interceptor
+    INTERCEPTOR
 }

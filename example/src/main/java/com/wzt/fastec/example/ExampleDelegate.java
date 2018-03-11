@@ -33,7 +33,7 @@ public class ExampleDelegate extends LatteDelegate {
     private void testRestClient() {
         RestClient.builder()
                 .loader(getContext())
-                .url("http://www.baidu.com")
+                .url("http://127.0.0.1/index/")
                 .request(new IRequest() {
                     @Override
                     public void onRequestStart() {
@@ -46,7 +46,7 @@ public class ExampleDelegate extends LatteDelegate {
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
-//                        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
                     }
                 })
                 .error(new IError() {

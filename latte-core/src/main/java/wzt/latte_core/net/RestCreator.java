@@ -1,7 +1,9 @@
 package wzt.latte_core.net;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -29,7 +31,20 @@ public class RestCreator {
 
     private static final class OkHttpHolder {
         private static final int TIME_OUT = 60;
-        private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
+        private static final OkHttpClient.Builder BUILDER = new OkHttpClient.Builder();
+
+        @SuppressWarnings("unchecked")
+        private static OkHttpClient.Builder addInterceptors() {
+            ArrayList<Interceptor> interceptors = (ArrayList<Interceptor>) Latte.getConfigurations().get(ConfigType.INTERCEPTOR.name());
+            if (interceptors != null && !interceptors.isEmpty()) {
+                for (Interceptor interceptor : interceptors) {
+                    BUILDER.addInterceptor(interceptor);
+                }
+            }
+            return BUILDER;
+        }
+
+        private static final OkHttpClient OK_HTTP_CLIENT = addInterceptors()
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .build();
     }
