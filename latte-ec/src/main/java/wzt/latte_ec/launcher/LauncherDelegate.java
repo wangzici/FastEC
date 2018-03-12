@@ -1,12 +1,14 @@
 package wzt.latte_ec.launcher;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
 import java.text.MessageFormat;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -22,7 +24,7 @@ import wzt.latte_ec.R2;
  * @date 2018/3/11
  * desc:
  */
-public class LauncherDeegate extends LatteDelegate implements ITimerListener{
+public class LauncherDelegate extends LatteDelegate implements ITimerListener{
     @BindView(R2.id.tv_launcher_timer)
     AppCompatTextView mTvTimer;
 
@@ -46,7 +48,13 @@ public class LauncherDeegate extends LatteDelegate implements ITimerListener{
     }
 
     private void initTimer() {
-        mTimer = new ScheduledThreadPoolExecutor(1);
+        //这里尝试使用ScheduledThreadPoolExecutor代替了Timer，并且实现了一个ThreadFactor，用于对生成的Thread来命名
+        mTimer = new ScheduledThreadPoolExecutor(1, new ThreadFactory() {
+            @Override
+            public Thread newThread(@NonNull Runnable r) {
+                return new Thread(r, LatteDelegate.class.getName());
+            }
+        });
         mTimer.scheduleAtFixedRate(new BaseTimerTask(this), 0, 1, TimeUnit.SECONDS);
     }
 
