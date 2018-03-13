@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import wzt.latte_core.delegates.LatteDelegate;
 import wzt.latte_core.ui.launcher.LauncherHolderCreator;
+import wzt.latte_core.util.storage.LattePreference;
 import wzt.latte_ec.R;
 
 /**
@@ -50,6 +51,6 @@ public class LauncherScrollDelegate extends LatteDelegate implements OnItemClick
 
     @Override
     public void onItemClick(int position) {
-
+        LattePreference.setAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.name(), true);
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.View;
 
 import java.text.MessageFormat;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 import wzt.latte_core.delegates.LatteDelegate;
+import wzt.latte_core.util.storage.LattePreference;
 import wzt.latte_core.util.timer.BaseTimerTask;
 import wzt.latte_core.util.timer.ITimerListener;
 import wzt.latte_ec.R;
@@ -34,6 +36,8 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener{
     @OnClick(R2.id.tv_launcher_timer)
     void onClickTimerView() {
         //TODO
+        mTimer.shutdown();
+        checkIsShowScroll();
     }
 
 
@@ -58,6 +62,13 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener{
         mTimer.scheduleAtFixedRate(new BaseTimerTask(this), 0, 1, TimeUnit.SECONDS);
     }
 
+    private void checkIsShowScroll() {
+        if (!LattePreference.getAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.name())) {
+            Log.i("wzt", "getSupportDelegate = " + getSupportDelegate());
+            getSupportDelegate().start(new LauncherScrollDelegate(),SINGLETASK);
+        }
+    }
+
     @Override
     public void onTimer() {
         getProxyActivity().runOnUiThread(new Runnable() {
@@ -67,6 +78,7 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener{
                 mCount--;
                 if (mCount < 0) {
                     mTimer.shutdown();
+                    checkIsShowScroll();
                 }
             }
         });
