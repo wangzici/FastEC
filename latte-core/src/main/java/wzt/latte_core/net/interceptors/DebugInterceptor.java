@@ -9,7 +9,7 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import wzt.latte_core.util.FileUtil;
+import wzt.latte_core.util.file.FileUtil;
 
 /**
  * @author Tao

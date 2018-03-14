@@ -1,4 +1,4 @@
-package wzt.latte_core.util;
+package wzt.latte_core.util.file;
 
 import android.content.ContentResolver;
 import android.content.Context;

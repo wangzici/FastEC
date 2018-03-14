@@ -10,8 +10,12 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import wzt.latte_core.delegates.LatteDelegate;
+import wzt.latte_core.net.RestClientBuilder;
+import wzt.latte_core.net.callback.ISuccess;
+import wzt.latte_core.util.log.LatteLogger;
 import wzt.latte_ec.R;
 import wzt.latte_ec.R2;
+import wzt.latte_ec.database.UserProfileDao;
 
 /**
  * @author Tao
@@ -34,7 +38,22 @@ public class SignUpDelegate extends LatteDelegate {
     @OnClick(R2.id.btn_sign_up)
     void onSignUpClick() {
         if (checkForm()) {
-            Toast.makeText(getContext(), "验证通过", Toast.LENGTH_LONG).show();
+            new RestClientBuilder()
+                    .url("http://192.168.0.3/RestServer/api/user_profile.php")
+                    .params("name", mName.getText().toString())
+                    .params("email", mEmail.getText().toString())
+                    .params("phone", mPhone.getText().toString())
+                    .params("password", mPassword.getText().toString())
+                    .success(new ISuccess() {
+                        @Override
+                        public void onSuccess(String response) {
+                            Toast.makeText(getContext(), "注册成功", Toast.LENGTH_LONG).show();
+                            LatteLogger.json("USER_PROFILE", response);
+                            SignHandler.onSignUp(response);
+                        }
+                    })
+                    .build()
+                    .post();
         }
     }
 

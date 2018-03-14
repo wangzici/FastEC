@@ -5,14 +5,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 import okhttp3.ResponseBody;
 import wzt.latte_core.app.Latte;
 import wzt.latte_core.net.callback.IRequest;
 import wzt.latte_core.net.callback.ISuccess;
-import wzt.latte_core.util.FileUtil;
+import wzt.latte_core.util.file.FileUtil;
 
 /**
  * @author Tao

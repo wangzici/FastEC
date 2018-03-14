@@ -103,7 +103,8 @@
                 android:gravity="center"
                 android:text="{fa-weixin}"
                 android:textColor="#04b00f"
-                android:textSize="40sp" />
+                android:textSize="40sp"
+                tools:ignore="HardcodedText" />
 
         </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v4.widget.NestedScrollView>

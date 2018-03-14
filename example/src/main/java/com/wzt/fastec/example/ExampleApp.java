@@ -2,10 +2,12 @@ package com.wzt.fastec.example;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import wzt.latte_core.app.Latte;
 import wzt.latte_core.net.interceptors.DebugInterceptor;
+import wzt.latte_ec.database.DatabaseManager;
 import wzt.latte_ec.icon.FontEcModule;
 
 /**
@@ -25,5 +27,16 @@ public class ExampleApp extends Application {
                 .withIcon(new FontEcModule())
                 .withInterceptor(new DebugInterceptor("index",R.raw.test))
                 .configure();
+        initStetho();
+        DatabaseManager.getInstance().init(getApplicationContext());
+    }
+
+    private void initStetho() {
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(getApplicationContext())
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(getApplicationContext()))
+                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
+                        .build()
+        );
     }
 }

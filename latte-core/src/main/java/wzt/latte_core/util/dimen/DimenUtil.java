@@ -1,4 +1,4 @@
-package wzt.latte_core.util;
+package wzt.latte_core.util.dimen;
 
 import android.content.Context;
 import android.content.res.Resources;

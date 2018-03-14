@@ -12,7 +12,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.util.ArrayList;
 
 import wzt.latte_core.R;
-import wzt.latte_core.util.DimenUtil;
+import wzt.latte_core.util.dimen.DimenUtil;
 
 /**
  * @author Tao
