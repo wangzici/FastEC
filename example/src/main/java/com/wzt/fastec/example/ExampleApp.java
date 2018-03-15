@@ -5,6 +5,7 @@ import android.app.Application;
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
+import me.yokeyword.fragmentation.Fragmentation;
 import wzt.latte_core.app.Latte;
 import wzt.latte_core.net.interceptors.DebugInterceptor;
 import wzt.latte_ec.database.DatabaseManager;
@@ -28,6 +29,10 @@ public class ExampleApp extends Application {
                 .withInterceptor(new DebugInterceptor("index",R.raw.test))
                 .configure();
         initStetho();
+        Fragmentation.builder()
+                .stackViewMode(Fragmentation.BUBBLE)
+                .debug(true)
+                .install();
         DatabaseManager.getInstance().init(getApplicationContext());
     }
 

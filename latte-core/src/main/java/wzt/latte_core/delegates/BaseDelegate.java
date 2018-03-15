@@ -16,6 +16,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportFragmentDelegate;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import wzt.latte_core.activities.ProxyActivity;
+import wzt.latte_core.util.log.LatteLogger;
 
 /**
  * @author Tao
@@ -47,6 +48,7 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        LatteLogger.d("wzt",this.getClass().getSimpleName() + ".onCreateView");
         View rootView = null;
         if (setLayout() instanceof Integer) {
             rootView = inflater.inflate((Integer) setLayout(), container, false);
@@ -54,6 +56,7 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
             rootView = (View) setLayout();
         }
         if (rootView != null) {
+            LatteLogger.d("wzt",this.getClass().getSimpleName() + ".onCreateView");
             mUnbinder = ButterKnife.bind(this, rootView);
             onBindView(savedInstanceState, rootView);
         }
@@ -66,6 +69,7 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
         //如果此处不去调用DELEGATE的onCreate方法，则会导致
         // java.lang.IllegalStateException: Can't find container, please call loadRootFragment() first!
         DELEGATE.onCreate(savedInstanceState);
+        LatteLogger.d("wzt",this.getClass().getSimpleName() + ".onCreate");
     }
 
     @Override
@@ -84,7 +88,9 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
     public void onDestroy() {
         super.onDestroy();
         if (mUnbinder != null) {
+            LatteLogger.d("wzt",this.getClass().getSimpleName() + ".onDestory");
             mUnbinder.unbind();
+            mUnbinder = null;
         }
     }
 

@@ -1,15 +1,18 @@
 package wzt.latte_ec.sign;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import wzt.latte_core.delegates.LatteDelegate;
+import wzt.latte_core.net.RestClient;
+import wzt.latte_core.net.callback.ISuccess;
+import wzt.latte_core.util.log.LatteLogger;
 import wzt.latte_ec.R;
 import wzt.latte_ec.R2;
 
@@ -19,7 +22,7 @@ import wzt.latte_ec.R2;
  * desc:
  */
 public class SignInDelegate extends LatteDelegate {
-
+    private ISignListener mISignListener;
 
     @BindView(R2.id.edit_sign_in_email)
     TextInputEditText mEmail;
@@ -50,6 +53,14 @@ public class SignInDelegate extends LatteDelegate {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ISignListener) {
+            mISignListener = (ISignListener) context;
+        }
+    }
+
+    @Override
     public Object setLayout() {
         return R.layout.delegate_sign_in;
     }
@@ -62,7 +73,19 @@ public class SignInDelegate extends LatteDelegate {
     @OnClick(R2.id.btn_sign_in)
     public void onViewClicked() {
         if (checkForm()) {
-            Toast.makeText(getContext(), "验证通过", Toast.LENGTH_LONG).show();
+            RestClient.builder()
+                    .url("http://192.168.0.3/RestServer/api/user_profile.php")
+                    .params("email", mEmail.getText().toString())
+                    .params("password", mPassword.getText().toString())
+                    .success(new ISuccess() {
+                        @Override
+                        public void onSuccess(String response) {
+                            LatteLogger.json("USER_PROFILE", response);
+                            SignHandler.onSignIn(response, mISignListener);
+                        }
+                    })
+                    .build()
+                    .post();
         }
     }
 

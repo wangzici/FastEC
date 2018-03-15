@@ -9,6 +9,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportActivity;
 import wzt.latte_core.R;
 import wzt.latte_core.delegates.LatteDelegate;
+import wzt.latte_core.util.log.LatteLogger;
 
 /**
  * @author Tao
@@ -26,6 +27,7 @@ public abstract class ProxyActivity extends SupportActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LatteLogger.d("wzt",this.getClass().getSimpleName() + ".onCreate");
         initContainer(savedInstanceState);
     }
 
@@ -41,6 +43,7 @@ public abstract class ProxyActivity extends SupportActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LatteLogger.d("wzt","ProxyActivity.onDestroy");
         System.gc();
         System.runFinalization();
     }

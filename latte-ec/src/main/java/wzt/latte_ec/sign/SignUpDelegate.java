@@ -1,5 +1,6 @@
 package wzt.latte_ec.sign;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -10,12 +11,11 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import wzt.latte_core.delegates.LatteDelegate;
-import wzt.latte_core.net.RestClientBuilder;
+import wzt.latte_core.net.RestClient;
 import wzt.latte_core.net.callback.ISuccess;
 import wzt.latte_core.util.log.LatteLogger;
 import wzt.latte_ec.R;
 import wzt.latte_ec.R2;
-import wzt.latte_ec.database.UserProfileDao;
 
 /**
  * @author Tao
@@ -23,6 +23,7 @@ import wzt.latte_ec.database.UserProfileDao;
  * desc:
  */
 public class SignUpDelegate extends LatteDelegate {
+    private ISignListener mISignListener;
 
     @BindView(R2.id.edit_sign_up_name)
     TextInputEditText mName;
@@ -38,7 +39,7 @@ public class SignUpDelegate extends LatteDelegate {
     @OnClick(R2.id.btn_sign_up)
     void onSignUpClick() {
         if (checkForm()) {
-            new RestClientBuilder()
+            RestClient.builder()
                     .url("http://192.168.0.3/RestServer/api/user_profile.php")
                     .params("name", mName.getText().toString())
                     .params("email", mEmail.getText().toString())
@@ -49,7 +50,7 @@ public class SignUpDelegate extends LatteDelegate {
                         public void onSuccess(String response) {
                             Toast.makeText(getContext(), "注册成功", Toast.LENGTH_LONG).show();
                             LatteLogger.json("USER_PROFILE", response);
-                            SignHandler.onSignUp(response);
+                            SignHandler.onSignUp(response, mISignListener);
                         }
                     })
                     .build()
@@ -107,6 +108,14 @@ public class SignUpDelegate extends LatteDelegate {
         }
 
         return isPass;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ISignListener) {
+            mISignListener = (ISignListener) context;
+        }
     }
 
     @Override

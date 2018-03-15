@@ -1,5 +1,6 @@
 package wzt.latte_ec.launcher;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +15,10 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import wzt.latte_core.app.AccountManager;
+import wzt.latte_core.app.IUserChecker;
 import wzt.latte_core.delegates.LatteDelegate;
+import wzt.latte_core.util.log.LatteLogger;
 import wzt.latte_core.util.storage.LattePreference;
 import wzt.latte_core.util.timer.BaseTimerTask;
 import wzt.latte_core.util.timer.ITimerListener;
@@ -26,12 +30,14 @@ import wzt.latte_ec.R2;
  * @date 2018/3/11
  * desc:
  */
-public class LauncherDelegate extends LatteDelegate implements ITimerListener{
+public class LauncherDelegate extends LatteDelegate implements ITimerListener {
     @BindView(R2.id.tv_launcher_timer)
     AppCompatTextView mTvTimer;
 
     private ScheduledThreadPoolExecutor mTimer;
     private int mCount = 5;
+
+    private ILauncherListener mILauncherListener;
 
     @OnClick(R2.id.tv_launcher_timer)
     void onClickTimerView() {
@@ -40,6 +46,18 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener{
         checkIsShowScroll();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ILauncherListener) {
+            mILauncherListener = (ILauncherListener) context;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override
     public Object setLayout() {
@@ -64,8 +82,23 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener{
 
     private void checkIsShowScroll() {
         if (!LattePreference.getAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.name())) {
-            Log.i("wzt", "getSupportDelegate = " + getSupportDelegate());
             getSupportDelegate().start(new LauncherScrollDelegate(),SINGLETASK);
+        } else {
+            AccountManager.checkAccount(new IUserChecker() {
+                @Override
+                public void onSignIn() {
+                    if (mILauncherListener != null) {
+                        mILauncherListener.onLauncherFinish(OnLauncherFinishTag.SIGNED);
+                    }
+                }
+
+                @Override
+                public void onNotSignIn() {
+                    if (mILauncherListener != null) {
+                        mILauncherListener.onLauncherFinish(OnLauncherFinishTag.NOT_SIGNED);
+                    }
+                }
+            });
         }
     }
 
@@ -74,7 +107,7 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener{
         getProxyActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mTvTimer.setText(MessageFormat.format("跳过\n{0}s",mCount));
+                mTvTimer.setText(MessageFormat.format("跳过\n{0}s", mCount));
                 mCount--;
                 if (mCount < 0) {
                     mTimer.shutdown();

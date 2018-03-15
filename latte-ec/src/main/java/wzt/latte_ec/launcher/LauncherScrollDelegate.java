@@ -1,5 +1,6 @@
 package wzt.latte_ec.launcher;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -9,6 +10,8 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 
 import java.util.ArrayList;
 
+import wzt.latte_core.app.AccountManager;
+import wzt.latte_core.app.IUserChecker;
 import wzt.latte_core.delegates.LatteDelegate;
 import wzt.latte_core.ui.launcher.LauncherHolderCreator;
 import wzt.latte_core.util.storage.LattePreference;
@@ -22,6 +25,7 @@ import wzt.latte_ec.R;
 public class LauncherScrollDelegate extends LatteDelegate implements OnItemClickListener{
     private ConvenientBanner<Integer> mConvenientBanner;
     private final ArrayList<Integer> INTEGERS = new ArrayList<>();
+    private ILauncherListener mILauncherListener;
 
     @Override
     public Object setLayout() {
@@ -50,7 +54,32 @@ public class LauncherScrollDelegate extends LatteDelegate implements OnItemClick
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ILauncherListener) {
+            mILauncherListener = (ILauncherListener) context;
+        }
+    }
+
+    @Override
     public void onItemClick(int position) {
-        LattePreference.setAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.name(), true);
+        if (position == INTEGERS.size() - 1) {
+            LattePreference.setAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.name(), true);
+            AccountManager.checkAccount(new IUserChecker() {
+                @Override
+                public void onSignIn() {
+                    if (mILauncherListener != null) {
+                        mILauncherListener.onLauncherFinish(OnLauncherFinishTag.SIGNED);
+                    }
+                }
+
+                @Override
+                public void onNotSignIn() {
+                    if (mILauncherListener != null) {
+                        mILauncherListener.onLauncherFinish(OnLauncherFinishTag.NOT_SIGNED);
+                    }
+                }
+            });
+        }
     }
 }
