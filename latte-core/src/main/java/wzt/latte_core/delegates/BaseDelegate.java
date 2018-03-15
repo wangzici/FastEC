@@ -56,7 +56,6 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
             rootView = (View) setLayout();
         }
         if (rootView != null) {
-            LatteLogger.d("wzt",this.getClass().getSimpleName() + ".onCreateView");
             mUnbinder = ButterKnife.bind(this, rootView);
             onBindView(savedInstanceState, rootView);
         }
