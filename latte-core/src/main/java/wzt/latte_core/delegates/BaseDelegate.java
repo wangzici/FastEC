@@ -89,6 +89,8 @@ public abstract class BaseDelegate extends Fragment implements ISupportFragment 
         if (mUnbinder != null) {
             LatteLogger.d("wzt",this.getClass().getSimpleName() + ".onDestory");
             mUnbinder.unbind();
+            //LauncherDelegate会在进入登陆页面后，会因为未知原因，在onDestory后重新调用其onCreate与onDestory方法，会导致进入登陆页面后点击返回，出现异常的情况
+            //目前暂时采取把mUnbinder在unbind之后置为空的方式解决
             mUnbinder = null;
         }
     }
