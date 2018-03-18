@@ -8,6 +8,7 @@ import wzt.latte_core.wechat.templates.AppRegisterTemplate;
  * @date 2018/3/17
  * desc:
  */
+@SuppressWarnings("unused")
 @AppRegisterGenerator(
         packagename = "com.wzt.fastec.example",
         registerTemplate = AppRegisterTemplate.class
