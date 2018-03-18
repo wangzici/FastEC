@@ -27,6 +27,8 @@ public class ExampleApp extends Application {
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
                 .withInterceptor(new DebugInterceptor("index",R.raw.test))
+                .withWeChatAppId("myAppId")
+                .withWeChatAppSecret("myAppSecret")
                 .configure();
         initStetho();
         Fragmentation.builder()

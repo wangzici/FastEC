@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import wzt.latte_core.activities.ProxyActivity;
+import wzt.latte_core.app.ConfigType;
+import wzt.latte_core.app.Latte;
 import wzt.latte_core.delegates.LatteDelegate;
 import wzt.latte_ec.launcher.ILauncherListener;
 import wzt.latte_ec.launcher.LauncherDelegate;
@@ -21,6 +23,7 @@ public class MainActivity extends ProxyActivity implements ILauncherListener, IS
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Latte.getConfigurations().put(ConfigType.ACTIVITY.name(), this);
     }
 
     @Override

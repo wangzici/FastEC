@@ -15,5 +15,8 @@ public enum ConfigType {
     //存储自己的初始化项目
     ICON,
     //OkHttp的Interceptor
-    INTERCEPTOR
+    INTERCEPTOR,
+    WE_CHAT_APP_ID,
+    WE_CHAT_APP_SECRET,
+    ACTIVITY
 }
