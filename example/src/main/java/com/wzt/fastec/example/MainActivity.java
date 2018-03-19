@@ -12,6 +12,7 @@ import wzt.latte_core.delegates.LatteDelegate;
 import wzt.latte_ec.launcher.ILauncherListener;
 import wzt.latte_ec.launcher.LauncherDelegate;
 import wzt.latte_ec.launcher.OnLauncherFinishTag;
+import wzt.latte_ec.main.ECBottomDelegate;
 import wzt.latte_ec.sign.ISignListener;
 import wzt.latte_ec.sign.SignInDelegate;
 
@@ -23,6 +24,10 @@ public class MainActivity extends ProxyActivity implements ILauncherListener, IS
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
         Latte.getConfigurations().put(ConfigType.ACTIVITY.name(), this);
     }
 
@@ -35,7 +40,7 @@ public class MainActivity extends ProxyActivity implements ILauncherListener, IS
     public void onLauncherFinish(OnLauncherFinishTag tag) {
         switch (tag) {
             case SIGNED:
-                getSupportDelegate().startWithPop(new ExampleDelegate());
+                getSupportDelegate().startWithPop(new ECBottomDelegate());
                 break;
             case NOT_SIGNED:
                 getSupportDelegate().startWithPop(new SignInDelegate());
