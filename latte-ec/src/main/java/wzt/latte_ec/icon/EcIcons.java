@@ -9,7 +9,10 @@ import com.joanzapata.iconify.Icon;
  */
 public enum EcIcons implements Icon{
     icon_share('\ue624'),
-    icon_change('\ue653');
+    icon_change('\ue653'),
+    icon_scan('\ue659'),
+    icon_bullhorn('\ue612'),
+    icon_ali_pay('\ue673');
 
     char character;
 

@@ -23,10 +23,10 @@ public class ExampleApp extends Application {
     public void onCreate() {
         super.onCreate();
         Latte.init(getApplicationContext())
-                .withApiHost("http://127.0.0.1")
+                .withApiHost("http://192.168.0.3/RestServer/api/")
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
-                .withInterceptor(new DebugInterceptor("index",R.raw.test))
+                .withInterceptor(new DebugInterceptor("test",R.raw.test))
                 .withWeChatAppId("myAppId")
                 .withWeChatAppSecret("myAppSecret")
                 .configure();
