@@ -46,7 +46,7 @@ public class LauncherScrollDelegate extends LatteDelegate implements OnItemClick
         INTEGERS.add(R.mipmap.launcher_05);
         mConvenientBanner
                 .setPages(new LauncherHolderCreator(), INTEGERS)
-                .setPageIndicator(new int[]{R.drawable.dot_normal, R.drawable.dot_focus})
+                .setPageIndicator(new int[]{wzt.latte_core.R.drawable.dot_normal, wzt.latte_core.R.drawable.dot_focus})
                 //Indicator的默认位置已经居中
                 //.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
                 .setOnItemClickListener(this)

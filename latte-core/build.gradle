@@ -29,6 +29,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:support-v4:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
@@ -51,6 +52,7 @@ dependencies {
     api 'com.alibaba:fastjson:1.2.46'
     //ConvenientBanner的依赖
     api 'com.bigkoo:convenientbanner:2.0.5'
+    compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
     //androdi的support design的依赖
     api 'com.android.support:design:26.1.0'
     //Logger依赖
@@ -63,4 +65,8 @@ dependencies {
     //微信依赖（带统计）
     //noinspection GradleDynamicVersion
     api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    //BaseRecyclerViewAdapterHelper依赖
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
 }
