@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import qiu.niorgai.StatusBarCompat;
 import wzt.latte_core.activities.ProxyActivity;
 import wzt.latte_core.app.ConfigType;
 import wzt.latte_core.app.Latte;
@@ -29,6 +30,7 @@ public class MainActivity extends ProxyActivity implements ILauncherListener, IS
             actionBar.hide();
         }
         Latte.getConfigurations().put(ConfigType.ACTIVITY.name(), this);
+        StatusBarCompat.translucentStatusBar(this, true);
     }
 
     @Override
