@@ -2,6 +2,7 @@ package wzt.latte_ec.main.index;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +20,7 @@ import wzt.latte_core.app.Latte;
 import wzt.latte_core.delegates.bottom.BottomItemDelegate;
 import wzt.latte_core.net.RestClient;
 import wzt.latte_core.net.callback.ISuccess;
+import wzt.latte_core.ui.recyclerview.BaseDecoration;
 import wzt.latte_core.ui.recyclerview.MultipleFields;
 import wzt.latte_core.ui.recyclerview.MultipleItemEntity;
 import wzt.latte_core.ui.refresh.PagingBean;
@@ -66,6 +68,8 @@ public class IndexDelegate extends BottomItemDelegate {
     private void initRecyclerView() {
         final GridLayoutManager manager = new GridLayoutManager(getContext(), 4);
         mRecyclerView.setLayoutManager(manager);
+        BaseDecoration decoration = BaseDecoration.create(ContextCompat.getColor(getContext(), R.color.app_background), 5);
+        mRecyclerView.addItemDecoration(decoration);
     }
 
     private void initRefreshLayout() {
