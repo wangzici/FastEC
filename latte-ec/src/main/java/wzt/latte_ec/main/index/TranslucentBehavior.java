@@ -41,17 +41,18 @@ public class TranslucentBehavior extends CoordinatorLayout.Behavior<Toolbar> {
     @Override
     public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull Toolbar child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type);
-        LatteLogger.d("mDistanceY = " + mDistanceY);
         //增加滑动距离
         mDistanceY += dy;
         //toolbar的高度
         final int targetHeight = child.getBottom();
-        if (mDistanceY > 0 && mDistanceY < targetHeight) {
+        if (mDistanceY >= 0 && mDistanceY <= targetHeight) {
             final float scale = (float) mDistanceY / targetHeight;
             final float alpha = scale * 255;
             child.setBackgroundColor(Color.argb((int) alpha, RGB_VALUE.red(), RGB_VALUE.green(), RGB_VALUE.blue()));
-        } else if (mDistanceY >= targetHeight) {
+        } else if (mDistanceY > targetHeight) {
             child.setBackgroundColor(Color.rgb(RGB_VALUE.red(), RGB_VALUE.green(), RGB_VALUE.blue()));
+        } else if (mDistanceY < 0) {
+            mDistanceY = 0;
         }
     }
 }
