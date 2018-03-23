@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 
-import wzt.latte_core.app.Latte;
 import wzt.latte_core.ui.recyclerview.RgbValue;
 import wzt.latte_core.util.log.LatteLogger;
 import wzt.latte_ec.R;

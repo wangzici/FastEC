@@ -9,21 +9,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
-import wzt.latte_core.app.Latte;
-import wzt.latte_core.delegates.LatteDelegate;
 import wzt.latte_core.delegates.bottom.BottomItemDelegate;
-import wzt.latte_core.net.RestClient;
-import wzt.latte_core.net.callback.ISuccess;
 import wzt.latte_core.ui.recyclerview.BaseDecoration;
-import wzt.latte_core.ui.recyclerview.MultipleFields;
-import wzt.latte_core.ui.recyclerview.MultipleItemEntity;
 import wzt.latte_core.ui.refresh.PagingBean;
 import wzt.latte_core.ui.refresh.RefreshHandler;
 import wzt.latte_ec.R;
