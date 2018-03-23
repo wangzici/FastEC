@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import wzt.latte_core.app.Latte;
+import wzt.latte_core.delegates.LatteDelegate;
 import wzt.latte_core.delegates.bottom.BottomItemDelegate;
 import wzt.latte_core.net.RestClient;
 import wzt.latte_core.net.callback.ISuccess;
@@ -27,6 +28,7 @@ import wzt.latte_core.ui.refresh.PagingBean;
 import wzt.latte_core.ui.refresh.RefreshHandler;
 import wzt.latte_ec.R;
 import wzt.latte_ec.R2;
+import wzt.latte_ec.main.ECBottomDelegate;
 
 /**
  * @author Tao
@@ -70,6 +72,8 @@ public class IndexDelegate extends BottomItemDelegate {
         mRecyclerView.setLayoutManager(manager);
         BaseDecoration decoration = BaseDecoration.create(ContextCompat.getColor(getContext(), R.color.app_background), 5);
         mRecyclerView.addItemDecoration(decoration);
+        final ECBottomDelegate ecBottomDelegate = getParentDelegate();
+        mRecyclerView.addOnItemTouchListener(IndexItemClickListener.create(ecBottomDelegate));
     }
 
     private void initRefreshLayout() {
