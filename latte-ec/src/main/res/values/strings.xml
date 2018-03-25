@@ -9,4 +9,5 @@
     <string name="password_re">确认密码</string>
     <string name="sign_in_tip">已经有账号？点击登陆</string>
     <string name="sign_up_tip">还没有账号？点击注册</string>
+    <string name="sort">分类</string>
 </resources>

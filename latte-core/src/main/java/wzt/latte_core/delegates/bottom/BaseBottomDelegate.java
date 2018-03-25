@@ -82,13 +82,14 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
             if (i == mIndexDelegate) {
                 iconTextView.setTextColor(mClickedColor);
                 textView.setTextColor(mClickedColor);
-            }else {
+            } else {
                 iconTextView.setTextColor(Color.GRAY);
                 textView.setTextColor(Color.GRAY);
             }
         }
         final ISupportFragment[] delegateArray = ITEM_DELEGATES.toArray(new ISupportFragment[size]);
         getSupportDelegate().loadMultipleRootFragment(R.id.bottom_bar_delegate_container,mIndexDelegate,delegateArray);
+        //getSupportDelegate().loadRootFragment(R.id.bottom_bar_delegate_container, delegateArray[mIndexDelegate]);
 
     }
 
@@ -113,6 +114,7 @@ public abstract class BaseBottomDelegate extends LatteDelegate implements View.O
         final AppCompatTextView itemTitle = (AppCompatTextView) item.getChildAt(1);
         itemTitle.setTextColor(mClickedColor);
         getSupportDelegate().showHideFragment(ITEM_DELEGATES.get(tag), ITEM_DELEGATES.get(mCurrentDelegate));
+        //getSupportDelegate().startWithPop(ITEM_DELEGATES.get(tag));
         //注意先后顺序
         mCurrentDelegate = tag;
     }

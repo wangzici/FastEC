@@ -9,7 +9,7 @@ import wzt.latte_core.delegates.bottom.BottomItemDelegate;
 import wzt.latte_core.delegates.bottom.BottomTabBean;
 import wzt.latte_core.delegates.bottom.ItemBuilder;
 import wzt.latte_ec.main.index.IndexDelegate;
-import wzt.latte_ec.main.index.SortDelegate;
+import wzt.latte_ec.main.sort.SortDelegate;
 
 /**
  * @author Tao

@@ -27,7 +27,6 @@ public abstract class ProxyActivity extends SupportActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LatteLogger.d("wzt",this.getClass().getSimpleName() + ".onCreate");
         initContainer(savedInstanceState);
     }
 
