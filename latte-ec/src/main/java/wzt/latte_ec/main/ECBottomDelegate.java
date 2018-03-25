@@ -8,6 +8,7 @@ import wzt.latte_core.delegates.bottom.BaseBottomDelegate;
 import wzt.latte_core.delegates.bottom.BottomItemDelegate;
 import wzt.latte_core.delegates.bottom.BottomTabBean;
 import wzt.latte_core.delegates.bottom.ItemBuilder;
+import wzt.latte_ec.main.discover.DiscoverDelegate;
 import wzt.latte_ec.main.index.IndexDelegate;
 import wzt.latte_ec.main.sort.SortDelegate;
 
@@ -22,7 +23,7 @@ public class ECBottomDelegate extends BaseBottomDelegate{
         final LinkedHashMap<BottomTabBean, BottomItemDelegate> items = new LinkedHashMap<>();
         items.put(new BottomTabBean("{fa-home}", "主页"), new IndexDelegate());
         items.put(new BottomTabBean("{fa-sort}", "分类"), new SortDelegate());
-        items.put(new BottomTabBean("{fa-compass}", "发现"), new IndexDelegate());
+        items.put(new BottomTabBean("{fa-compass}", "发现"), new DiscoverDelegate());
         items.put(new BottomTabBean("{fa-shopping-cart}", "购物车"), new IndexDelegate());
         items.put(new BottomTabBean("{fa-user}", "我的"), new IndexDelegate());
         return builder.addItems(items).build();
