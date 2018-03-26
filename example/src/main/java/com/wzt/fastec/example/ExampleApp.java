@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.wzt.fastec.example.event.TestEvent;
 
 import me.yokeyword.fragmentation.Fragmentation;
 import wzt.latte_core.app.Latte;
@@ -12,7 +13,6 @@ import wzt.latte_ec.database.DatabaseManager;
 import wzt.latte_ec.icon.FontEcModule;
 
 /**
- *
  * @author Tao
  * @date 2018/2/24
  * desc:
@@ -26,9 +26,10 @@ public class ExampleApp extends Application {
                 .withApiHost("http://192.168.0.3/RestServer/api/")
                 .withIcon(new FontAwesomeModule())
                 .withIcon(new FontEcModule())
-                .withInterceptor(new DebugInterceptor("test",R.raw.test))
+                .withInterceptor(new DebugInterceptor("test", R.raw.test))
                 .withWeChatAppId("myAppId")
                 .withWeChatAppSecret("myAppSecret")
+                .withWebEvent("test", new TestEvent())
                 .configure();
         initStetho();
         Fragmentation.builder()

@@ -1,5 +1,6 @@
 package wzt.latte_core.delegates.web;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -10,6 +11,7 @@ import android.webkit.WebView;
  * desc:
  */
 public class WebViewInitializer {
+    @SuppressLint("SetJavaScriptEnabled")
     public static WebView createWebView(WebView webView) {
         WebView.setWebContentsDebuggingEnabled(true);
         //不能横向滚动

@@ -2,6 +2,7 @@ package wzt.latte_core.app;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 
 import com.joanzapata.iconify.Icon;
 import com.joanzapata.iconify.IconFontDescriptor;
@@ -13,9 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import okhttp3.Interceptor;
+import wzt.latte_core.delegates.web.event.Event;
+import wzt.latte_core.delegates.web.event.EventManager;
 
 /**
- *
  * @author Tao
  * @date 2018/2/24
  * desc:
@@ -80,6 +82,17 @@ public class Configurator {
 
     public final Configurator withWeChatAppSecret(String appSecret) {
         LATTE_CONFIGS.put(ConfigType.WE_CHAT_APP_SECRET.name(), appSecret);
+        return this;
+    }
+
+    public Configurator withWebEvent(@NonNull String name, @NonNull Event event) {
+        final EventManager manager = EventManager.getInstance();
+        manager.addEvent(name, event);
+        return this;
+    }
+
+    public Configurator withJavascriptInterface(@NonNull String name) {
+        LATTE_CONFIGS.put(ConfigType.JAVASCRIPT_INTERFACE.name(), name);
         return this;
     }
 
