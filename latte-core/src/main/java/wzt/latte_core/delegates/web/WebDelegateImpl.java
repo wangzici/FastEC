@@ -18,12 +18,18 @@ import wzt.latte_core.delegates.web.route.Router;
  * desc:
  */
 public class WebDelegateImpl extends WebDelegate {
+    private IPageLoadListener mIPageLoadListener = null;
+
     public static WebDelegateImpl create(String url) {
         final Bundle args = new Bundle();
         args.putString(RouteKeys.URL.name(), url);
         final WebDelegateImpl delegate = new WebDelegateImpl();
         delegate.setArguments(args);
         return delegate;
+    }
+
+    public void setPageLoadListener(IPageLoadListener listener) {
+        mIPageLoadListener = listener;
     }
 
     @Override
@@ -39,6 +45,7 @@ public class WebDelegateImpl extends WebDelegate {
     @Override
     public WebViewClient initWebViewClient() {
         final WebViewClientImpl client = new WebViewClientImpl(this);
+        client.setPageLoadListener(mIPageLoadListener);
         return client;
     }
 

@@ -29,6 +29,7 @@ public class ExampleApp extends Application {
                 .withInterceptor(new DebugInterceptor("test", R.raw.test))
                 .withWeChatAppId("myAppId")
                 .withWeChatAppSecret("myAppSecret")
+                .withJavascriptInterface("latte")
                 .withWebEvent("test", new TestEvent())
                 .configure();
         initStetho();
