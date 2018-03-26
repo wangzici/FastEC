@@ -21,6 +21,7 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewIniti
     private String mUrl;
     private final ReferenceQueue<WebView> WEB_VIEW_QUEUE = new ReferenceQueue<>();
     private boolean mIsWebViewAvailable = false;
+    private LatteDelegate mTopDelegate = null;
 
     abstract IWebViewInitializer setInitializer();
 
@@ -54,6 +55,16 @@ public abstract class WebDelegate extends LatteDelegate implements IWebViewIniti
         }
     }
 
+    public void setTopDelegate(LatteDelegate delegate) {
+        mTopDelegate = delegate;
+    }
+
+    public LatteDelegate getTopDelegate() {
+        if (mTopDelegate == null) {
+            mTopDelegate = this;
+        }
+        return mTopDelegate;
+    }
 
     public WebView getWebView() {
         if (mWebView == null) {
