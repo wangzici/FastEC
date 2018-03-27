@@ -1,5 +1,6 @@
 package wzt.latte_ec.main.cart;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,10 +10,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ViewStubCompat;
 import android.view.View;
+import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,7 +30,7 @@ import wzt.latte_ec.R2;
  * @date 2018/3/26
  * desc:
  */
-public class ShopCartDelegate extends BottomItemDelegate implements ISuccess {
+public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, ICartItemListener {
     private ShopCartAdapter mAdapter;
 
     @BindView(R2.id.rv_shop_cart)
@@ -64,19 +65,40 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess {
         for (int i = dataSize; i > 0; i--) {
             MultipleItemEntity entity = data.get(i - 1);
             final boolean isSelected = entity.getField(ShopCartItemFields.IS_SELECTED);
-            if(isSelected){
+            if (isSelected) {
                 final int entityPosition = entity.getField(ShopCartItemFields.POSITION);
                 mAdapter.remove(entityPosition);
             }
         }
         mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
-
+        syncTotalPrince();
+        checkItemCount();
     }
 
     @OnClick(R2.id.tv_top_shop_cart_clear)
     void onClickClear() {
         mAdapter.getData().clear();
         mAdapter.notifyDataSetChanged();
+        syncTotalPrince();
+        checkItemCount();
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void checkItemCount() {
+        final int count = mAdapter.getItemCount();
+        if (count == 0) {
+            final View stubView = mStubNoItem.inflate();
+            final AppCompatTextView tvToBuy = stubView.findViewById(R.id.tv_stub_to_buy);
+            tvToBuy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getContext(), "你该购物啦！", Toast.LENGTH_SHORT).show();
+                }
+            });
+            mRecyclerView.setVisibility(View.GONE);
+        } else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -104,8 +126,21 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess {
     public void onSuccess(String response) {
         final List<MultipleItemEntity> data = new ShopCartDataConverter().setJsonData(response).convert();
         mAdapter = new ShopCartAdapter(data);
+        mAdapter.setCartItemListener(this);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mAdapter);
+        syncTotalPrince();
+        checkItemCount();
+    }
+
+    @Override
+    public void onItemClick(double itemTotalPrice) {
+        syncTotalPrince();
+    }
+
+    private void syncTotalPrince() {
+        final double price = mAdapter.getTotalPrice();
+        mTvTotalPrice.setText(String.valueOf(price));
     }
 }

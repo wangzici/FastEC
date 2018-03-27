@@ -16,9 +16,10 @@ import com.joanzapata.iconify.widget.IconTextView;
 import java.util.List;
 
 import wzt.latte_core.app.Latte;
+import wzt.latte_core.net.RestClient;
+import wzt.latte_core.net.callback.ISuccess;
 import wzt.latte_core.ui.recyclerview.MultipleFields;
 import wzt.latte_core.ui.recyclerview.MultipleItemEntity;
-import wzt.latte_core.util.log.LatteLogger;
 import wzt.latte_ec.R;
 
 /**
@@ -28,19 +29,38 @@ import wzt.latte_ec.R;
  */
 public class ShopCartAdapter extends BaseMultiItemQuickAdapter<MultipleItemEntity, BaseViewHolder> {
     private boolean mIsSelectedAll = false;
+    private ICartItemListener mCartItemListener = null;
+    private double mTotalPrice = 0.00;
 
     private static final RequestOptions OPTIONS = new RequestOptions()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .centerCrop()
             .dontAnimate();
 
-    public void setIsSelectedAll(boolean isSelectedAll) {
-        this.mIsSelectedAll = isSelectedAll;
-    }
-
     ShopCartAdapter(List<MultipleItemEntity> data) {
         super(data);
         addItemType(ShopCartItemType.SHOP_CART_ITEM, R.layout.item_shop_cart);
+    }
+
+    void setIsSelectedAll(boolean isSelectedAll) {
+        this.mIsSelectedAll = isSelectedAll;
+    }
+
+
+    public void setCartItemListener(ICartItemListener listener) {
+        this.mCartItemListener = listener;
+    }
+
+    public double getTotalPrice() {
+        List<MultipleItemEntity> data = getData();
+        int totalPrice = 0;
+        for (MultipleItemEntity entity : data) {
+            final int countNum = entity.getField(ShopCartItemFields.COUNT);
+            final double price = entity.getField(ShopCartItemFields.PRICE);
+            final double itemTotal = countNum * price;
+            totalPrice += itemTotal;
+        }
+        return totalPrice;
     }
 
     @Override
@@ -95,6 +115,63 @@ public class ShopCartAdapter extends BaseMultiItemQuickAdapter<MultipleItemEntit
                                     (ContextCompat.getColor(Latte.getApplicationContext(), R.color.app_main));
                             entity.setField(ShopCartItemFields.IS_SELECTED, true);
                         }
+                    }
+                });
+
+                //添加加减事件
+                iconMinus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final int currentCount = entity.getField(ShopCartItemFields.COUNT);
+                        if (Integer.parseInt(tvCount.getText().toString()) > 1) {
+                            RestClient.builder()
+                                    .url("shop_cart_count.php")
+                                    .loader(mContext)
+                                    .params("count", currentCount)
+                                    .success(new ISuccess() {
+                                        @Override
+                                        public void onSuccess(String response) {
+                                            int countNum = Integer.parseInt(tvCount.getText().toString());
+                                            countNum--;
+                                            entity.setField(ShopCartItemFields.COUNT, countNum);
+                                            tvCount.setText(String.valueOf(countNum));
+                                            if (mCartItemListener != null) {
+                                                //mTotalPrice = mTotalPrice - price;
+                                                final double itemTotal = countNum * price;
+                                                mCartItemListener.onItemClick(itemTotal);
+                                            }
+                                        }
+                                    })
+                                    .build()
+                                    .post();
+                        }
+                    }
+                });
+
+                iconPlus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final int currentCount = entity.getField(ShopCartItemFields.COUNT);
+                        RestClient.builder()
+                                .url("shop_cart_count.php")
+                                .loader(mContext)
+                                .params("count", currentCount)
+                                .success(new ISuccess() {
+                                    @Override
+                                    public void onSuccess(String response) {
+                                        int countNum = Integer.parseInt(tvCount.getText().toString());
+                                        countNum++;
+                                        entity.setField(ShopCartItemFields.COUNT, countNum);
+                                        tvCount.setText(String.valueOf(countNum));
+                                        if (mCartItemListener != null) {
+                                            //mTotalPrice = mTotalPrice + price;
+                                            final double itemTotal = countNum * price;
+                                            mCartItemListener.onItemClick(itemTotal);
+                                        }
+                                    }
+                                })
+                                .build()
+                                .post();
                     }
                 });
                 break;
