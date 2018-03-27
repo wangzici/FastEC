@@ -3,13 +3,19 @@ package wzt.latte_ec.pay;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.alibaba.fastjson.JSON;
+
 import wzt.latte_core.delegates.LatteDelegate;
+import wzt.latte_core.net.RestClient;
+import wzt.latte_core.net.callback.ISuccess;
+import wzt.latte_core.util.log.LatteLogger;
 import wzt.latte_ec.R;
 
 /**
@@ -23,10 +29,15 @@ public class FastPay implements View.OnClickListener {
     private Activity mActivity = null;
 
     private AlertDialog mDialog = null;
+    private int mOrderID = -1;
 
-    public FastPay(LatteDelegate delegate) {
+    private FastPay(LatteDelegate delegate) {
         mActivity = delegate.getProxyActivity();
         mDialog = new AlertDialog.Builder(delegate.getContext()).create();
+    }
+
+    public static FastPay create(LatteDelegate delegate) {
+        return new FastPay(delegate);
     }
 
     public void beginPayDialog() {
@@ -55,6 +66,30 @@ public class FastPay implements View.OnClickListener {
     public FastPay setPayResultListener(IAlPayResultListener listener) {
         this.mIAlPayResultListener = listener;
         return this;
+    }
+
+    public FastPay setOrderId(int orderId) {
+        this.mOrderID = orderId;
+        return this;
+    }
+
+    private void alPay(int orderId) {
+        final String singUrl = "你的服务端支付地址" + orderId;
+        //获取签名字符串
+        RestClient.builder()
+                .url(singUrl)
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+                        final String paySign = JSON.parseObject(response).getString("result");
+                        LatteLogger.d("PAY_SIGN", paySign);
+                        //必须是异步的调用客户端支付接口
+                        final PayAsyncTask payAsyncTask = new PayAsyncTask(mActivity, mIAlPayResultListener);
+                        payAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, paySign);
+                    }
+                })
+                .build()
+                .post();
     }
 
     @Override

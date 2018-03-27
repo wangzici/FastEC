@@ -12,9 +12,11 @@ import android.support.v7.widget.ViewStubCompat;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.List;
+import java.util.WeakHashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -22,16 +24,18 @@ import wzt.latte_core.delegates.bottom.BottomItemDelegate;
 import wzt.latte_core.net.RestClient;
 import wzt.latte_core.net.callback.ISuccess;
 import wzt.latte_core.ui.recyclerview.MultipleItemEntity;
+import wzt.latte_core.util.log.LatteLogger;
 import wzt.latte_ec.R;
 import wzt.latte_ec.R2;
 import wzt.latte_ec.pay.FastPay;
+import wzt.latte_ec.pay.IAlPayResultListener;
 
 /**
  * @author Tao
  * @date 2018/3/26
  * desc:
  */
-public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, ICartItemListener {
+public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, ICartItemListener, IAlPayResultListener {
     private ShopCartAdapter mAdapter;
 
     @BindView(R2.id.rv_shop_cart)
@@ -151,6 +155,51 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
     }
 
     private void createOrder() {
-        new FastPay(this).beginPayDialog();
+        final String orderUrl = "你的生成订单的API";
+        final WeakHashMap<String, Object> orderParams = new WeakHashMap<>();
+        //加入你的参数
+        RestClient.builder()
+                .url(orderUrl)
+                .loader(getContext())
+                .params(orderParams)
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+                        //进行具体的支付
+                        LatteLogger.d("ORDER", response);
+                        final int orderId = JSON.parseObject(response).getInteger("result");
+                        FastPay.create(ShopCartDelegate.this)
+                                .setPayResultListener(ShopCartDelegate.this)
+                                .setOrderId(orderId)
+                                .beginPayDialog();
+                    }
+                })
+                .build()
+                .post();
+    }
+
+    @Override
+    public void onPaySuccess() {
+
+    }
+
+    @Override
+    public void onPaying() {
+
+    }
+
+    @Override
+    public void onPayFail() {
+
+    }
+
+    @Override
+    public void onPayCancel() {
+
+    }
+
+    @Override
+    public void onPayConnectError() {
+
     }
 }
