@@ -4,9 +4,6 @@ import android.widget.Toast;
 
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 
-import wzt.latte_core.activities.ProxyActivity;
-import wzt.latte_core.delegates.LatteDelegate;
-import wzt.latte_core.wechat.BaseWXEntryActivity;
 import wzt.latte_core.wechat.BaseWXPayEntryActivity;
 
 /**
