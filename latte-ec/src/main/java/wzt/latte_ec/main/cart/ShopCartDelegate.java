@@ -24,6 +24,7 @@ import wzt.latte_core.net.callback.ISuccess;
 import wzt.latte_core.ui.recyclerview.MultipleItemEntity;
 import wzt.latte_ec.R;
 import wzt.latte_ec.R2;
+import wzt.latte_ec.pay.FastPay;
 
 /**
  * @author Tao
@@ -81,6 +82,11 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
         mAdapter.notifyDataSetChanged();
         syncTotalPrince();
         checkItemCount();
+    }
+
+    @OnClick(R2.id.tv_shop_cart_pay)
+    void onClickPay() {
+        createOrder();
     }
 
     @SuppressLint("RestrictedApi")
@@ -142,5 +148,9 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
     private void syncTotalPrince() {
         final double price = mAdapter.getTotalPrice();
         mTvTotalPrice.setText(String.valueOf(price));
+    }
+
+    private void createOrder() {
+        new FastPay(this).beginPayDialog();
     }
 }
