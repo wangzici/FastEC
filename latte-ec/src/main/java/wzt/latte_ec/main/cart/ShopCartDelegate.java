@@ -156,7 +156,16 @@ public class ShopCartDelegate extends BottomItemDelegate implements ISuccess, IC
 
     private void createOrder() {
         final String orderUrl = "你的生成订单的API";
+        //此orderParams用于放入各种数据，如价格之类的
         final WeakHashMap<String, Object> orderParams = new WeakHashMap<>();
+        orderParams.put("userid", 264392);
+        //amount即价格
+        orderParams.put("amount", 0.01);
+        orderParams.put("comment", "测试支付");
+        orderParams.put("type", 1);
+        orderParams.put("ordertype", 0);
+        orderParams.put("isanonymous", true);
+        orderParams.put("followeduser", 0);
         //加入你的参数
         RestClient.builder()
                 .url(orderUrl)
