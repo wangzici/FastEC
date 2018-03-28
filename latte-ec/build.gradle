@@ -32,4 +32,6 @@ dependencies {
     api project(':latte-core')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation files('libs/alipaySdk-20180316.jar')
+    //圆形图片空间依赖
+    api 'de.hdodenhof:circleimageview:2.2.0'
 }

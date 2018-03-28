@@ -11,6 +11,7 @@ import wzt.latte_core.delegates.bottom.ItemBuilder;
 import wzt.latte_ec.main.cart.ShopCartDelegate;
 import wzt.latte_ec.main.discover.DiscoverDelegate;
 import wzt.latte_ec.main.index.IndexDelegate;
+import wzt.latte_ec.main.personal.PersonalDelegate;
 import wzt.latte_ec.main.sort.SortDelegate;
 
 /**
@@ -26,7 +27,7 @@ public class ECBottomDelegate extends BaseBottomDelegate{
         items.put(new BottomTabBean("{fa-sort}", "分类"), new SortDelegate());
         items.put(new BottomTabBean("{fa-compass}", "发现"), new DiscoverDelegate());
         items.put(new BottomTabBean("{fa-shopping-cart}", "购物车"), new ShopCartDelegate());
-        items.put(new BottomTabBean("{fa-user}", "我的"), new IndexDelegate());
+        items.put(new BottomTabBean("{fa-user}", "我的"), new PersonalDelegate());
         return builder.addItems(items).build();
     }
 
