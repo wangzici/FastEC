@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="MyAppCompactDialogStyle" parent="Theme.AppCompat.Dialog" >
+    <style name="MyAppCompactDialogStyle" parent="Theme.AppCompat.Dialog">
         <!--无标题栏-->
         <item name="android:windowNoTitle">true</item>
         <!--背景透明-->
@@ -17,11 +17,16 @@
     </style>
 
     <!--透明Activity-->
-    <style name="Theme.AppCompat.Translucent" >
+    <style name="Theme.AppCompat.Translucent">
         <item name="android:colorBackground">@android:color/transparent</item>
         <!--不要使用缓存-->
-        <item  name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+    <style name="anim_panel_up_from_bottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
 </resources>

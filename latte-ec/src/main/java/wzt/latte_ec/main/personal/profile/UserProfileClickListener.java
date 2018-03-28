@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import wzt.latte_core.delegates.LatteDelegate;
+import wzt.latte_core.ui.camera.LatteCamera;
 import wzt.latte_ec.R;
 import wzt.latte_ec.main.personal.list.ListBean;
 
@@ -42,6 +43,7 @@ public class UserProfileClickListener extends SimpleClickListener {
         switch (id) {
             case 1:
                 //开始照相机或选择图片
+                LatteCamera.start(DELEGATE);
                 break;
             case 2:
                 final LatteDelegate nameDeleate = bean.getDelegate();
@@ -51,7 +53,7 @@ public class UserProfileClickListener extends SimpleClickListener {
                 getGenderDialog(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        final TextView textView =  view.findViewById(R.id.tv_arrow_value);
+                        final TextView textView = view.findViewById(R.id.tv_arrow_value);
                         textView.setText(mGenders[which]);
                         dialog.cancel();
                     }
