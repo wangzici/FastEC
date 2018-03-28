@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import wzt.latte_core.delegates.bottom.BottomItemDelegate;
 import wzt.latte_ec.R;
 import wzt.latte_ec.R2;
 import wzt.latte_ec.main.personal.list.ListAdapter;
 import wzt.latte_ec.main.personal.list.ListBean;
 import wzt.latte_ec.main.personal.list.ListItemType;
+import wzt.latte_ec.main.personal.order.OrderListDelegate;
 
 /**
  * @author Tao
@@ -23,12 +25,26 @@ import wzt.latte_ec.main.personal.list.ListItemType;
  * desc:
  */
 public class PersonalDelegate extends BottomItemDelegate{
+
     @BindView(R2.id.rv_personal_setting)
     RecyclerView mRvSettings;
 
     @Override
     public Object setLayout() {
         return R.layout.delegate_personal;
+    }
+
+    @OnClick(R2.id.tv_all_order)
+    void onClickAllOrder() {
+        Bundle args = new Bundle();
+        args.putString(OrderListDelegate.ORDER_TYPE, "all");
+        startOrderListByType(args);
+    }
+
+    private void startOrderListByType(Bundle args) {
+        final OrderListDelegate delegate = new OrderListDelegate();
+        delegate.setArguments(args);
+        getParentDelegate().getSupportDelegate().start(delegate);
     }
 
     @Override
