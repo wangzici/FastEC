@@ -18,6 +18,7 @@ import wzt.latte_ec.main.personal.list.ListAdapter;
 import wzt.latte_ec.main.personal.list.ListBean;
 import wzt.latte_ec.main.personal.list.ListItemType;
 import wzt.latte_ec.main.personal.order.OrderListDelegate;
+import wzt.latte_ec.main.personal.profile.UserProfileDelegate;
 
 /**
  * @author Tao
@@ -32,6 +33,11 @@ public class PersonalDelegate extends BottomItemDelegate{
     @Override
     public Object setLayout() {
         return R.layout.delegate_personal;
+    }
+
+    @OnClick(R2.id.img_user_avatar)
+    void onClickAvatar() {
+        getParentDelegate().getSupportDelegate().start(new UserProfileDelegate());
     }
 
     @OnClick(R2.id.tv_all_order)
