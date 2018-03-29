@@ -83,4 +83,6 @@ dependencies {
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.1.0"
     //Ucrop裁剪图片
     api "com.github.yalantis:ucrop:2.2.1-native"
+    //Android的support包提供的cardView
+    api 'com.android.support:cardview-v7:26.1.0'
 }
