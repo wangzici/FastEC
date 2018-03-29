@@ -6,6 +6,7 @@ import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.wzt.fastec.example.event.TestEvent;
 
+import cn.jpush.android.api.JPushInterface;
 import me.yokeyword.fragmentation.Fragmentation;
 import wzt.latte_core.app.Latte;
 import wzt.latte_core.net.interceptors.DebugInterceptor;
@@ -38,6 +39,8 @@ public class ExampleApp extends Application {
                 .debug(true)
                 .install();
         DatabaseManager.getInstance().init(getApplicationContext());
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(getApplicationContext());
     }
 
     private void initStetho() {
