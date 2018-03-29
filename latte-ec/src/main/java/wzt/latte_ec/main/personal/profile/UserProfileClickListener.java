@@ -30,8 +30,8 @@ public class UserProfileClickListener extends SimpleClickListener {
 
     private String[] mGenders = new String[]{"男", "女", "保密"};
 
-    public UserProfileClickListener(UserProfileDelegate DELEGATE) {
-        this.DELEGATE = DELEGATE;
+    public UserProfileClickListener(UserProfileDelegate delegate) {
+        this.DELEGATE = delegate;
     }
 
 
@@ -43,7 +43,7 @@ public class UserProfileClickListener extends SimpleClickListener {
         switch (id) {
             case 1:
                 //开始照相机或选择图片
-                LatteCamera.start(DELEGATE);
+                DELEGATE.startCameraWithCheck();
                 break;
             case 2:
                 final LatteDelegate nameDeleate = bean.getDelegate();
