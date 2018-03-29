@@ -10,6 +10,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
@@ -19,6 +20,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import wzt.latte_core.delegates.LatteDelegate;
+import wzt.latte_core.net.RestClient;
+import wzt.latte_core.net.callback.ISuccess;
 import wzt.latte_core.util.callback.CallBackManager;
 import wzt.latte_core.util.callback.CallbackType;
 import wzt.latte_core.util.callback.IGlobalCallback;
@@ -58,6 +61,37 @@ public class UserProfileClickListener extends SimpleClickListener {
                         Glide.with(DELEGATE)
                                 .load(args)
                                 .into(avatar);
+
+                        //首先向服务器中上传头像信息
+                        RestClient.builder()
+                                .url(UploadConfig.UPLOAD_IMG)
+                                .loader(DELEGATE.getContext())
+                                .file(args.getPath())
+                                .success(new ISuccess() {
+                                    @Override
+                                    public void onSuccess(String response) {
+                                        LatteLogger.d("ON_CROP_UPLOAD", response);
+                                        final String path = JSON.parseObject(response).getJSONObject("result")
+                                                .getString("path");
+
+                                        //上传头像成功后，通知服务器更新信息
+                                        RestClient.builder()
+                                                .url("user_profile.php")
+                                                .params("avatar", path)
+                                                .loader(DELEGATE.getContext())
+                                                .success(new ISuccess() {
+                                                    @Override
+                                                    public void onSuccess(String response) {
+                                                        //获取更新后的用户信息，然后更新本地数据库
+                                                        //没有本地数据的APP，则每次打开APP都请求API，获取信息
+                                                    }
+                                                })
+                                                .build()
+                                                .post();
+                                    }
+                                })
+                                .build()
+                                .upload();
                     }
                 });
                 DELEGATE.startCameraWithCheck();
