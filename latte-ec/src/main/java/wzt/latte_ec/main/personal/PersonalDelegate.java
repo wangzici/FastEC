@@ -20,6 +20,7 @@ import wzt.latte_ec.main.personal.list.ListBean;
 import wzt.latte_ec.main.personal.list.ListItemType;
 import wzt.latte_ec.main.personal.order.OrderListDelegate;
 import wzt.latte_ec.main.personal.profile.UserProfileDelegate;
+import wzt.latte_ec.main.personal.settings.SettingsDelegate;
 
 /**
  * @author Tao
@@ -66,7 +67,7 @@ public class PersonalDelegate extends BottomItemDelegate{
         final ListBean system = new ListBean.Builder()
                 .setItemType(ListItemType.ITEM_NORMAL)
                 .setId(2)
-                //.setDelegate(new SettingsDelegate())
+                .setDelegate(new SettingsDelegate())
                 .setText("系统设置")
                 .build();
 

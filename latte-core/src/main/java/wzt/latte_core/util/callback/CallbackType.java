@@ -6,5 +6,16 @@ package wzt.latte_core.util.callback;
  * desc:
  */
 public enum CallbackType {
+    /**
+     * desc:裁剪图片后的回调
+     */
     ON_CROP,
+    /**
+     * desc:打开推送开关的回调
+     */
+    TAG_OPEN_PUSH,
+    /**
+     * desc:关闭推送开关的回调
+     */
+    TAG_STOP_PUSH
 }
