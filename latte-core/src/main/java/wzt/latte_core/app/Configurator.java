@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
+import com.blankj.utilcode.util.Utils;
 import com.joanzapata.iconify.Icon;
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
@@ -42,6 +43,7 @@ public class Configurator {
         initIcon();
         Logger.addLogAdapter(new AndroidLogAdapter());
         LATTE_CONFIGS.put(ConfigType.CONFIG_READY.name(), true);
+        Utils.init(Latte.getApplicationContext());
     }
 
     public static Configurator getInstance() {

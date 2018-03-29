@@ -19,6 +19,7 @@ import java.io.File;
 import wzt.latte_core.R;
 import wzt.latte_core.delegates.PermissionCheckerDelegate;
 import wzt.latte_core.util.file.FileUtil;
+import wzt.latte_core.util.log.LatteLogger;
 
 /**
  * @author Tao
@@ -66,8 +67,9 @@ public class CameraHandler implements View.OnClickListener {
         final File tempFile = new File(FileUtil.CAMERA_PHOTO_DIR, currentPhotoName);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //通过FileProvider获取文件的Uri
+            LatteLogger.d("tempFile", tempFile.getPath());
             Uri uri = FileProvider.getUriForFile(DELEGATE.getContext(), DELEGATE.getContext().getPackageName() + ".fileprovider", tempFile);
-            CameraImageBean.getInstance().setPath(uri);
+            CameraImageBean.getInstance().setPath(Uri.fromFile(tempFile));
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         } else {
             Uri uri = Uri.fromFile(tempFile);

@@ -3,10 +3,14 @@ package wzt.latte_ec.main.personal.profile;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
 
@@ -15,7 +19,10 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import wzt.latte_core.delegates.LatteDelegate;
-import wzt.latte_core.ui.camera.LatteCamera;
+import wzt.latte_core.util.callback.CallBackManager;
+import wzt.latte_core.util.callback.CallbackType;
+import wzt.latte_core.util.callback.IGlobalCallback;
+import wzt.latte_core.util.log.LatteLogger;
 import wzt.latte_ec.R;
 import wzt.latte_ec.main.personal.list.ListBean;
 
@@ -43,6 +50,16 @@ public class UserProfileClickListener extends SimpleClickListener {
         switch (id) {
             case 1:
                 //开始照相机或选择图片
+                CallBackManager.getInstance().addCallback(CallbackType.ON_CROP, new IGlobalCallback<Uri>() {
+                    @Override
+                    public void executeCallback(@Nullable Uri args) {
+                        LatteLogger.d("ON_CROP", args);
+                        final ImageView avatar = view.findViewById(R.id.img_arrow_avatar);
+                        Glide.with(DELEGATE)
+                                .load(args)
+                                .into(avatar);
+                    }
+                });
                 DELEGATE.startCameraWithCheck();
                 break;
             case 2:
