@@ -26,13 +26,14 @@ import wzt.latte_core.util.callback.IGlobalCallback;
 import wzt.latte_ec.R;
 import wzt.latte_ec.R2;
 import wzt.latte_ec.main.ECBottomDelegate;
+import wzt.latte_ec.main.index.search.SearchDelegate;
 
 /**
  * @author Tao
  * @date 2018/3/19
  * desc:
  */
-public class IndexDelegate extends BottomItemDelegate {
+public class IndexDelegate extends BottomItemDelegate implements View.OnFocusChangeListener {
     @BindView(R2.id.rv_index)
     RecyclerView mRecyclerView = null;
     @BindView(R2.id.srl_index)
@@ -74,6 +75,7 @@ public class IndexDelegate extends BottomItemDelegate {
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
         mRefreshHandler = RefreshHandler.create(mRefreshLayout, mRecyclerView, new IndexDataConverter(), new PagingBean());
         mRefreshHandler.firstPage("index.php");
+        mSearchView.setOnFocusChangeListener(this);
     }
 
     private void initRecyclerView() {
@@ -92,5 +94,12 @@ public class IndexDelegate extends BottomItemDelegate {
                 android.R.color.holo_red_light};
         mRefreshLayout.setColorSchemeResources(colors);
         mRefreshLayout.setProgressViewOffset(true, 120, 300);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            getParentDelegate().getSupportDelegate().start(new SearchDelegate());
+        }
     }
 }
