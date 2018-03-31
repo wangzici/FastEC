@@ -9,14 +9,20 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.joanzapata.iconify.widget.IconTextView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import wzt.latte_core.delegates.bottom.BottomItemDelegate;
 import wzt.latte_core.ui.recyclerview.BaseDecoration;
 import wzt.latte_core.ui.refresh.PagingBean;
 import wzt.latte_core.ui.refresh.RefreshHandler;
+import wzt.latte_core.ui.scanner.ScannerDelegate;
+import wzt.latte_core.util.callback.CallBackManager;
+import wzt.latte_core.util.callback.CallbackType;
+import wzt.latte_core.util.callback.IGlobalCallback;
 import wzt.latte_ec.R;
 import wzt.latte_ec.R2;
 import wzt.latte_ec.main.ECBottomDelegate;
@@ -39,6 +45,18 @@ public class IndexDelegate extends BottomItemDelegate {
     AppCompatEditText mSearchView = null;
 
     private RefreshHandler mRefreshHandler;
+
+    @OnClick(R2.id.icon_index_scan)
+    public void onScanClick() {
+        CallBackManager.getInstance().addCallback(CallbackType.ON_SCAN, new IGlobalCallback<String>() {
+            @Override
+            public void executeCallback(@Nullable String args) {
+                Toast.makeText(getContext(), args, Toast.LENGTH_LONG).show();
+            }
+        });
+        getParentDelegate().start(new ScannerDelegate());
+    }
+
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {

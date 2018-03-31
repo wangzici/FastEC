@@ -17,5 +17,9 @@ public enum CallbackType {
     /**
      * desc:关闭推送开关的回调
      */
-    TAG_STOP_PUSH
+    TAG_STOP_PUSH,
+    /**
+     * desc:扫描到二维码数据后的回调
+     */
+    ON_SCAN;
 }
