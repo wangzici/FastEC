@@ -83,10 +83,6 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener, Bas
         final int total = BEAN.getTotal();
         final int index = BEAN.getPageIndex();
 
-        LatteLogger.d("wzt", "pageSize = " + pageSize);
-        LatteLogger.d("wzt", "currentCount = " + currentCount);
-        LatteLogger.d("wzt", "total = " + total);
-        LatteLogger.d("wzt", "index = " + index);
         if (mAdapter.getData().size() < pageSize || currentCount >= total) {
             mAdapter.loadMoreEnd(true);
         } else {
@@ -102,7 +98,6 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener, Bas
                                     CONVERTER.clearData();
                                     mAdapter.addData(CONVERTER.setJsonData(response).convert());
                                     //累加数量
-                                    LatteLogger.d("wzt1", "dataSize = " + mAdapter.getData().size());
                                     BEAN.setCurrentCount(mAdapter.getData().size());
                                     //表示加载结束
                                     mAdapter.loadMoreComplete();
