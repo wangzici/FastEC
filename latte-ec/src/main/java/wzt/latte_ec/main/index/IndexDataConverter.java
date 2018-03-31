@@ -20,6 +20,8 @@ public class IndexDataConverter extends DataConverter{
 
     @Override
     public ArrayList<MultipleItemEntity> convert() {
+        //这里如果像老师一样用父类的ENTITIES的话，会导致ENTITIES的对象直接作为了Adapter的data，之后如果清空了CONVERTER里的ENTITIES的话，mAdapter里面的数据也被清空了，导致出现加载第二页时清空之前的数据的现象
+        ArrayList<MultipleItemEntity> arrayList = new ArrayList<>();
         final JSONArray dataArray = JSON.parseObject(getJsonData()).getJSONArray("data");
         final int size = dataArray.size();
         for (int i = 0; i < size; i++) {
@@ -56,8 +58,8 @@ public class IndexDataConverter extends DataConverter{
                     .setField(MultipleFields.IMAGE_URL,imageUrl)
                     .setField(MultipleFields.BANNERS,bannerImages)
                     .build();
-            ENTITIES.add(entity);
+            arrayList.add(entity);
         }
-        return ENTITIES;
+        return arrayList;
     }
 }
