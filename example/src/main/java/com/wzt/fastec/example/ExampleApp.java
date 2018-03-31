@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.facebook.stetho.Stetho;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.wzt.fastec.example.event.ShareEvent;
 import com.wzt.fastec.example.event.TestEvent;
 
 import cn.jpush.android.api.JPushInterface;
@@ -36,6 +37,7 @@ public class ExampleApp extends Application {
                 .withWeChatAppSecret("myAppSecret")
                 .withJavascriptInterface("latte")
                 .withWebEvent("test", new TestEvent())
+                .withWebEvent("share", new ShareEvent())
                 .configure();
         initStetho();
         Fragmentation.builder()
