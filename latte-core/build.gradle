@@ -87,4 +87,8 @@ dependencies {
     api 'com.android.support:cardview-v7:26.1.0'
     //二维码控件barcodescanner
     implementation 'me.dm7.barcodescanner:zbar:1.9.8'
+    //View动画依赖
+    api 'com.android.support:support-compat:26.1.0'
+    api 'com.daimajia.easing:library:2.0@aar'
+    api 'com.daimajia.androidanimations:library:2.3@aar'
 }

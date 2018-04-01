@@ -19,19 +19,29 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.daimajia.androidanimations.library.YoYo;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import wzt.latte_core.delegates.LatteDelegate;
 import wzt.latte_core.net.RestClient;
 import wzt.latte_core.net.callback.ISuccess;
+import wzt.latte_core.ui.animation.BazierAnimation;
+import wzt.latte_core.ui.animation.BezierUtil;
+import wzt.latte_core.ui.animation.ScaleUpAnimator;
 import wzt.latte_core.ui.banner.HolderCreator;
 import wzt.latte_core.ui.widget.CircleTextView;
+import wzt.latte_core.util.log.LatteLogger;
 import wzt.latte_ec.R;
 import wzt.latte_ec.R2;
 
@@ -40,7 +50,7 @@ import wzt.latte_ec.R2;
  * @date 2018/3/23
  * desc:
  */
-public class GoodsDetailDelegate extends LatteDelegate {
+public class GoodsDetailDelegate extends LatteDelegate implements BezierUtil.AnimationListener {
 
     @BindView(R2.id.goods_detail_toolbar)
     Toolbar mToolbar = null;
@@ -65,8 +75,27 @@ public class GoodsDetailDelegate extends LatteDelegate {
     @BindView(R2.id.icon_shop_cart)
     IconTextView mIconShopCart = null;
 
+    private static final RequestOptions OPTIONS = new RequestOptions()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .centerCrop()
+            .dontAnimate()
+            .override(100, 100);
+
+    @OnClick(R2.id.rl_add_shop_cart)
+    void onClickAddShopCart() {
+        final CircleImageView animImg = new CircleImageView(getContext());
+        Glide.with(this)
+                .load(mGoodsThumbUrl)
+                .apply(OPTIONS)
+                .into(animImg);
+        BazierAnimation.addCart(this, mRlAddShopCart, mIconShopCart, animImg, this);
+    }
+
     private static final String ARG_GOODS_ID = "ARG_GOODS_ID";
     private int mGoodsId = -1;
+
+    private String mGoodsThumbUrl = null;
+    private int mShopCount = 0;
 
     public static GoodsDetailDelegate create(int goodsId) {
         final Bundle args = new Bundle();
@@ -74,6 +103,13 @@ public class GoodsDetailDelegate extends LatteDelegate {
         final GoodsDetailDelegate delegate = new GoodsDetailDelegate();
         delegate.setArguments(args);
         return delegate;
+    }
+
+    private void setShopCartCount(JSONObject data) {
+        mGoodsThumbUrl = data.getString("thumb");
+        if (mShopCount == 0) {
+            mCircleTextView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -110,6 +146,7 @@ public class GoodsDetailDelegate extends LatteDelegate {
                         initBanner(data);
                         initGoodsInfo(data);
                         initPager(data);
+                        setShopCartCount(data);
                     }
                 })
                 .build()
@@ -157,5 +194,29 @@ public class GoodsDetailDelegate extends LatteDelegate {
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
         return new DefaultHorizontalAnimator();
+    }
+
+    @Override
+    public void onAnimationEnd() {
+        YoYo.with(new ScaleUpAnimator())
+                .duration(500)
+                .playOn(mIconShopCart);
+        RestClient.builder()
+                .url("add_shop_cart_count.php")
+                .success(new ISuccess() {
+                    @Override
+                    public void onSuccess(String response) {
+                        LatteLogger.json("ADD", response);
+                        final boolean isAdded = JSON.parseObject(response).getBoolean("data");
+                        if (isAdded) {
+                            mShopCount++;
+                            mCircleTextView.setVisibility(View.VISIBLE);
+                            mCircleTextView.setText(String.valueOf(mShopCount));
+                        }
+                    }
+                })
+                .params("count", mShopCount)
+                .build()
+                .post();
     }
 }

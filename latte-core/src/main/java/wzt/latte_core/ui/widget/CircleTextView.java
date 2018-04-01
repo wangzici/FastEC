@@ -28,7 +28,7 @@ public class CircleTextView extends AppCompatTextView {
         super(context, attrs);
         PAINT = new Paint();
         FILTER = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
-        PAINT.setColor(Color.WHITE);
+        PAINT.setColor(Color.RED);
         //设置PAINT的抗锯齿
         PAINT.setAntiAlias(true);
     }
