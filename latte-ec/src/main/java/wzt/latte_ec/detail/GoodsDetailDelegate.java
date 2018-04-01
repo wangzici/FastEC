@@ -1,10 +1,14 @@
 package wzt.latte_ec.detail;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -89,6 +93,8 @@ public class GoodsDetailDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
         initData();
+        initTabLayout();
+
     }
 
     private void initData() {
@@ -103,10 +109,16 @@ public class GoodsDetailDelegate extends LatteDelegate {
                                 JSON.parseObject(response).getJSONObject("data");
                         initBanner(data);
                         initGoodsInfo(data);
+                        initPager(data);
                     }
                 })
                 .build()
                 .get();
+    }
+
+    private void initPager(JSONObject data) {
+        final PagerAdapter adapter = new TabPagerAdapter(getFragmentManager(), data);
+        mViewPager.setAdapter(adapter);
     }
 
     private void initBanner(JSONObject data) {
@@ -123,6 +135,17 @@ public class GoodsDetailDelegate extends LatteDelegate {
                 .setPageTransformer(new DefaultTransformer())
                 .startTurning(3000)
                 .setCanLoop(true);
+    }
+
+    private void initTabLayout() {
+        //参数可选fixed和scrollable——fixed是指固定个数，整个TabLayout的宽度不变 ，scrollable是使其可以横行滚动
+        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        mTabLayout.setSelectedTabIndicatorColor
+                (ContextCompat.getColor(getContext(), R.color.app_main));
+        mTabLayout.setTabTextColors(ColorStateList.valueOf(Color.BLACK));
+        mTabLayout.setBackgroundColor(Color.WHITE);
+        //此处绑定ViewPager，通过调用PagerAdapter里的方法getPageTitle来得到每个Tab的Title
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     private void initGoodsInfo(JSONObject data) {
